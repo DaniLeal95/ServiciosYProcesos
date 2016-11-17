@@ -3,14 +3,12 @@
     $opcion = $_POST['consulta'];
 
 
-  $conexion = new mysqli('localhost','root','','Prueba1');
+  $conexion = new mysqli('localhost','root','','gestionBar');
   if($conexion->connect_error){
     trigger_error("Failed to connect to MySQL: ".$conexion->connect_error,E_USER_ERROR);
   }
     if($opcion=="insertar" && @$_POST['Insercion']) {
-      $nombre = $_POST['nombre'];
-      $edad = $_POST['edad'];
-      $nacionalidad = $_POST['nacionalidad'];
+
     }
 
 ?>
@@ -27,16 +25,12 @@
 
                 echo "<table>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Edad</th>
-                            <th>Nacionalidad</th>
+                         
                         </tr>";
 
               while($row = $result-> fetch_assoc()){
                   echo "<tr>
-                            <td>".$row['nombre']."</td>
-                            <td>".$row['edad']."</td>
-                            <td>".$row['nacionalidad']."</td>
+
                         </tr>";
               }
             }
@@ -60,8 +54,8 @@
                   </form>";
 
             // Preparar
-            $stmt = $conexion->prepare("insert into tabla1 (nombre, edad, nacionalidad) VALUES (?, ?, ?)");
-            $stmt->bind_param('sis', $nombre, $edad, $nacionalidad);
+            //$stmt = $conexion->prepare("insert into tabla1 (nombre, edad, nacionalidad) VALUES (?, ?, ?)");
+            //$stmt->bind_param('sis', $nombre, $edad, $nacionalidad);
 
             if ($stmt->execute()) {
 
