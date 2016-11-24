@@ -62,5 +62,8 @@ class DatabaseModel {
     public function getConnection() {
         return $this->_connection;
     }
-
+    public function closeConnection(){
+        self::$_instance=null;
+        $this->_connection->close();
+    }
 }

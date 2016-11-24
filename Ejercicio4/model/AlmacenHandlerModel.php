@@ -16,7 +16,7 @@ class AlmacenHandlerModel
 
         $db = DatabaseModel::getInstance();
         $db_connection = $db->getConnection();
-        $db_connection2 = $db->getConnection();
+
 
 
         //IMPORTANT: we have to be very careful about automatic data type conversions in MySQL.
@@ -56,6 +56,7 @@ class AlmacenHandlerModel
             }
 
             $prep_query->execute();
+            $prep_query->store_result();
             $listaAlmacen = array();
 
             //IMPORTANT: IN OUR SERVER, I COULD NOT USE EITHER GET_RESULT OR FETCH_OBJECT,
@@ -69,21 +70,43 @@ class AlmacenHandlerModel
 
             while ($prep_query->fetch()) {
                 $tipo = utf8_encode($tipo);
-                $nombre=utf8_encode("");
-                $idproducto = ($idproducto);
+
+
                 switch($tipo){
                     case "bebida":
+
                         $selectNombrebebidaxid = "Select ".\ConstantesDB\ConsAlmacenModel::NOMBRE.
                             " From ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_BEBIDA.
                             " Where ".\ConstantesDB\ConsAlmacenModel::COD." = ?";
+                        //$db->closeConnection();
 
-                        $prep_query2 = $db_connection2->prepare($selectNombrebebidaxid);
+                        //$db = DatabaseModel::getInstance();
+                        //$db_connection = $db->getConnection();
 
-                        $prep_query2->bind_param('i', $idproducto);
+                        $prep_query2 = $db_connection->prepare($selectNombrebebidaxid);
+
+                        //$prep_query2->bind_param('i', $idproducto);
 
                         $prep_query2->execute();
 
-                        $prep_query2 -> bind_result($nombre);
+                        $res=$prep_query2 -> get_result();
+                        while ($fila= $res->fetch_assoc()){
+                            $nombre=$fila[\ConstantesDB\ConsAlmacenModel::NOMBRE];
+                        }
+                        echo $nombre;
+                        $prep_query2->close();
+
+
+                        //$prep_query2 = $db_connection->prepare($selectNombrebebidaxid);
+                        /*$prep_query2 = $db_connection->query($selectNombrebebidaxid);
+                        while($row = $prep_query2->fetch_assoc()) {
+                            $nombre=$row["nombre"];
+                        }*/
+                        //$prep_query2->bind_param('i', $idproducto);
+
+
+                        //$prep_query2->bind_result($nombre);
+                        //$nombre=utf8_encode($nombre);
 
                         break;
 
@@ -98,33 +121,46 @@ class AlmacenHandlerModel
                             " From ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_COMIDA.
                             " Where ".\ConstantesDB\ConsAlmacenModel::COD." = ?";
 
-                        $prep_query2 = $db_connection2->prepare($selectNombrealimentoxid);
+                        $db->closeConnection();
+
+                        $db = DatabaseModel::getInstance();
+                        $db_connection = $db->getConnection();
+
+                        $prep_query2 = $db_connection->prepare($selectNombrealimentoxid);
 
                         $prep_query2->bind_param('i', $idproducto);
 
                         $prep_query2->execute();
-
-                        $prep_query2 -> bind_result($nombre);
+                        $prep_query2->store_result();
+                        $prep_query2 -> get_result($nombre);
+                        $prep_query2 -> close();
+                        $nombre=utf8_encode($nombre);
                         break;
                     case "suministro":
                         $selectNombresuministroxid = "Select ".\ConstantesDB\ConsAlmacenModel::NOMBRE.
                             " From ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_SUMINISTRO.
                             " Where ".\ConstantesDB\ConsAlmacenModel::COD." = ?";
-                        $prep_query2 = $db_connection2->prepare($selectNombresuministroxid);
+
+                        $db->closeConnection();
+
+                        $db = DatabaseModel::getInstance();
+                        $db_connection = $db->getConnection();
+
+                        $prep_query2 = $db_connection->prepare($selectNombresuministroxid);
 
                         $prep_query2->bind_param('i', $idproducto);
 
                         $prep_query2->execute();
-
+                        $prep_query2->store_result();
                         $prep_query2-> bind_result($nombre);
-
-
+                        $prep_query2 -> close();
+                        $nombre=utf8_encode($nombre);
                         break;
                 }
 
 
                 $almacen= new Almacen($idproducto, $tipo, $cantidad,$nombre);
-                echo $almacen->getIdproducto();
+
                 $listaAlmacen[] = $almacen;
             }
 
