@@ -70,7 +70,7 @@ class AlmacenHandlerModel
 
             while ($prep_query->fetch()) {
                 $tipo = utf8_encode($tipo);
-
+                $nombre="";
 
                 switch($tipo){
                     case "bebida":
@@ -85,37 +85,23 @@ class AlmacenHandlerModel
 
                         $prep_query2 = $db_connection->prepare($selectNombrebebidaxid);
 
-                        //$prep_query2->bind_param('i', $idproducto);
+                        $prep_query2->bind_param('i', $idproducto);
 
                         $prep_query2->execute();
 
-                        $res=$prep_query2 -> get_result();
-                        while ($fila= $res->fetch_assoc()){
-                            $nombre=$fila[\ConstantesDB\ConsAlmacenModel::NOMBRE];
+                        $prep_query2->bind_result($nombre);
+
+                        $prep_query2 -> store_result();
+                        while ($prep_query2->fetch()){
+                            echo $nombre;
                         }
-                        echo $nombre;
+
                         $prep_query2->close();
 
 
-                        //$prep_query2 = $db_connection->prepare($selectNombrebebidaxid);
-                        /*$prep_query2 = $db_connection->query($selectNombrebebidaxid);
-                        while($row = $prep_query2->fetch_assoc()) {
-                            $nombre=$row["nombre"];
-                        }*/
-                        //$prep_query2->bind_param('i', $idproducto);
-
-
-                        //$prep_query2->bind_result($nombre);
-                        //$nombre=utf8_encode($nombre);
 
                         break;
 
-
-//            $result = $prep_query->get_result();
-//            for ($i = 0; $row = $result->fetch_object(LibroModel::class); $i++) {
-//
-//                $listaLibros[$i] = $row;
-//            }
                     case "alimento":
                         $selectNombrealimentoxid = "Select ".\ConstantesDB\ConsAlmacenModel::NOMBRE.
                             " From ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_COMIDA.
@@ -129,13 +115,17 @@ class AlmacenHandlerModel
                         $prep_query2 = $db_connection->prepare($selectNombrealimentoxid);
 
                         $prep_query2->bind_param('i', $idproducto);
-
                         $prep_query2->execute();
-                        $prep_query2->store_result();
-                        $prep_query2 -> get_result($nombre);
-                        $prep_query2 -> close();
-                        $nombre=utf8_encode($nombre);
-                        break;
+
+                        $prep_query2->bind_result($nombre);
+
+                        $prep_query2 -> store_result();
+                        while ($prep_query2->fetch()){
+                            echo $nombre;
+                        }
+
+                        $prep_query2->close();
+
                     case "suministro":
                         $selectNombresuministroxid = "Select ".\ConstantesDB\ConsAlmacenModel::NOMBRE.
                             " From ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_SUMINISTRO.
@@ -151,10 +141,16 @@ class AlmacenHandlerModel
                         $prep_query2->bind_param('i', $idproducto);
 
                         $prep_query2->execute();
-                        $prep_query2->store_result();
-                        $prep_query2-> bind_result($nombre);
-                        $prep_query2 -> close();
-                        $nombre=utf8_encode($nombre);
+
+                        $prep_query2->bind_result($nombre);
+
+                        $prep_query2 -> store_result();
+                        while ($prep_query2->fetch()){
+                            echo $nombre;
+                        }
+
+                        $prep_query2->close();
+
                         break;
                 }
 
