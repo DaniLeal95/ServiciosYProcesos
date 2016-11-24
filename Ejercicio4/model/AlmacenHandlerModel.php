@@ -1,5 +1,6 @@
 <?php
-Require_once "ConsAlmacenModel";
+Require_once "ConsAlmacenModel.php";
+Require_once "Almacen.php";
 /**
  * Created by PhpStorm.
  * User: dleal
@@ -15,6 +16,7 @@ class AlmacenHandlerModel
 
         $db = DatabaseModel::getInstance();
         $db_connection = $db->getConnection();
+        $db_connection2 = $db->getConnection();
 
 
         //IMPORTANT: we have to be very careful about automatic data type conversions in MySQL.
@@ -32,6 +34,8 @@ class AlmacenHandlerModel
             $query = "SELECT " . \ConstantesDB\ConsAlmacenModel::COD . ","
                 . \ConstantesDB\ConsAlmacenModel::TIPO. ","
                 . \ConstantesDB\ConsAlmacenModel::CANTIDAD . " FROM " . \ConstantesDB\ConsAlmacenModel::TABLE_NAME;
+
+
 
 
 
@@ -62,25 +66,26 @@ class AlmacenHandlerModel
             $tipo = 0;
             $cantidad= 0;
             $prep_query->bind_result($idproducto, $tipo, $cantidad);
+
             while ($prep_query->fetch()) {
                 $tipo = utf8_encode($tipo);
-
+                $nombre=utf8_encode("");
+                $idproducto = ($idproducto);
                 switch($tipo){
                     case "bebida":
+                        $selectNombrebebidaxid = "Select ".\ConstantesDB\ConsAlmacenModel::NOMBRE.
+                            " From ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_BEBIDA.
+                            " Where ".\ConstantesDB\ConsAlmacenModel::COD." = ?";
+
+                        $prep_query2 = $db_connection2->prepare($selectNombrebebidaxid);
+
+                        $prep_query2->bind_param('i', $idproducto);
+
+                        $prep_query2->execute();
+
+                        $prep_query2 -> bind_result($nombre);
+
                         break;
-                    case "alimento":
-                        break;
-                    case "suministro":
-                        break;
-                }
-
-
-                $almacen= new Almacen($idproducto, $tipo, $cantidad,"");
-                $listaAlmacen[] = $almacen;
-            }
-
-
-            /*AHORA LE INTRODUCIREMOS EL NOMBRE*/
 
 
 //            $result = $prep_query->get_result();
@@ -88,6 +93,43 @@ class AlmacenHandlerModel
 //
 //                $listaLibros[$i] = $row;
 //            }
+                    case "alimento":
+                        $selectNombrealimentoxid = "Select ".\ConstantesDB\ConsAlmacenModel::NOMBRE.
+                            " From ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_COMIDA.
+                            " Where ".\ConstantesDB\ConsAlmacenModel::COD." = ?";
+
+                        $prep_query2 = $db_connection2->prepare($selectNombrealimentoxid);
+
+                        $prep_query2->bind_param('i', $idproducto);
+
+                        $prep_query2->execute();
+
+                        $prep_query2 -> bind_result($nombre);
+                        break;
+                    case "suministro":
+                        $selectNombresuministroxid = "Select ".\ConstantesDB\ConsAlmacenModel::NOMBRE.
+                            " From ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_SUMINISTRO.
+                            " Where ".\ConstantesDB\ConsAlmacenModel::COD." = ?";
+                        $prep_query2 = $db_connection2->prepare($selectNombresuministroxid);
+
+                        $prep_query2->bind_param('i', $idproducto);
+
+                        $prep_query2->execute();
+
+                        $prep_query2-> bind_result($nombre);
+
+
+                        break;
+                }
+
+
+                $almacen= new Almacen($idproducto, $tipo, $cantidad,$nombre);
+                echo $almacen->getIdproducto();
+                $listaAlmacen[] = $almacen;
+            }
+
+
+
         }
         $db_connection->close();
 

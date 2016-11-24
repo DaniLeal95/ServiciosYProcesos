@@ -8,7 +8,7 @@
  */
 
 require_once "Controller.php";
-class ControllerAlmacen extends Controller
+class AlmacenController extends Controller
 {
     public function manageGetVerb(Request $request)
     {
@@ -24,7 +24,7 @@ class ControllerAlmacen extends Controller
         }
 
 
-        $listaAlmacen = LibroHandlerModel::getLibro($id);
+        $listaAlmacen = AlmacenHandlerModel::getAlmacen($id);
 
         if ($listaAlmacen != null) {
             $code = '200';
@@ -33,7 +33,7 @@ class ControllerAlmacen extends Controller
 
             //We could send 404 in any case, but if we want more precission,
             //we can send 400 if the syntax of the entity was incorrect...
-            if (LibroHandlerModel::isValid($id)) {
+            if (AlmacenHandlerModel::isValid($id)) {
                 $code = '404';
             } else {
                 $code = '400';

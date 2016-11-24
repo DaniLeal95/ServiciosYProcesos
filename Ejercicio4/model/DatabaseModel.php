@@ -1,8 +1,12 @@
 <?php
-/*
-* Mysql database class - only one connection allowed (SINGLETON PATTERN)
-*/
-class Database {
+
+/**
+ * Created by PhpStorm.
+ * User: dleal
+ * Date: 24/11/16
+ * Time: 9:55
+ */
+class DatabaseModel {
 
     //Many php developers use the underscore as a prefix for private properties
     private $_connection;

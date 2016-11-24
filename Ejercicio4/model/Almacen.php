@@ -6,7 +6,7 @@
  * Date: 17/11/16
  * Time: 10:19
  */
-class Almacen
+class Almacen implements JsonSerializable
 {
     private $idproducto;
     private $tipo;
@@ -25,6 +25,20 @@ class Almacen
         $this->tipo = $tipo;
         $this->cantidad = $cantidad;
         $this->nombre=$nombre;
+    }
+
+    function jsonSerialize(){
+        return array(
+            'idproducto' => $this->idproducto,
+            'tipo'=> $this->tipo,
+            'cantidad' => $this->cantidad,
+            'nombre'=> $this->nombre
+        );
+    }
+
+    public function __sleep()
+    {
+        return array('idproducto','tipo','cantidad','nombre');
     }
 
     /**
@@ -91,6 +105,7 @@ class Almacen
     {
         $this->cantidad = $cantidad;
     }
+
 
 
 }
