@@ -86,7 +86,7 @@ class AlmacenHandlerModel
 
         for($i = 0;$i<count($listaAlmacen);$i++){
             $almacen = $listaAlmacen[$i];
-            switch($almacen->tipo){
+            switch($almacen->getTipo()){
                 case "bebida":
 
                     $selectNombrebebidaxid = "Select ".\ConstantesDB\ConsAlmacenModel::NOMBRE.
@@ -107,6 +107,7 @@ class AlmacenHandlerModel
                     $prep_query2->close();
                     $nombre=utf8_encode($nombre);
 
+                    $listaAlmacen[$i]=$almacen  ;
                     //$prep_query2 = $db_connection->prepare($selectNombrebebidaxid);
                     /*$prep_query2 = $db_connection->query($selectNombrebebidaxid);
                     while($row = $prep_query2->fetch_assoc()) {
