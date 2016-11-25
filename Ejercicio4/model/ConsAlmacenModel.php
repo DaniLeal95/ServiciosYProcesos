@@ -14,6 +14,7 @@ class ConsAlmacenModel
     const COD = "idproducto";
     const TIPO = "tipo";
     const CANTIDAD = "cantidad";
+
     /*DISTINTOS SUBTIPOS*/
     const TABLE_NAME_COMIDA = "alimentos";
     const TABLE_NAME_BEBIDA = "bebidas";

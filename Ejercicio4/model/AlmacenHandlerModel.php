@@ -10,6 +10,45 @@ Require_once "Almacen.php";
 class AlmacenHandlerModel
 {
 
+    public static function setAlmacen($almacen){
+        $db = DatabaseModel::getInstance();
+        $db_connection = $db->getConnection();
+
+        $insert="INSERT INTO ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME." (".\ConstantesDB\ConsAlmacenModel::TIPO.",".\ConstantesDB\ConsAlmacenModel::CANTIDAD.")VALUES (". $almacen->getTipo().",".$almacen->getCantidad().")";
+
+        $prep_insert=$db_connection->prepare($insert);
+
+        $filasafectadas=$prep_insert->execute();
+
+        $prep_insert->close();
+        if($filasafectadas){
+            $db = DatabaseModel::getInstance();
+            $db_connection = $db->getConnection();
+
+            switch ($almacen->getTipo()){
+                case \ConstantesDB\ConsAlmacenModel::TABLE_NAME_BEBIDA:
+                    $insert="Insert into ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_BEBIDA." (".\ConstantesDB\ConsAlmacenModel::COD.",".\ConstantesDB\ConsAlmacenModel::NOMBRE.") VALUES (?,".$almacen->getNombre().")";
+                    break;
+                case \ConstantesDB\ConsAlmacenModel::TABLE_NAME_COMIDA:
+                    $insert="Insert into ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_COMIDA." (".\ConstantesDB\ConsAlmacenModel::COD.",".\ConstantesDB\ConsAlmacenModel::NOMBRE.") VALUES (?,".$almacen->getNombre().")";
+                    break;
+                case \ConstantesDB\ConsAlmacenModel::TABLE_NAME_SUMINISTRO:
+                    $insert="Insert into ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_SUMINISTRO." (".\ConstantesDB\ConsAlmacenModel::COD.",".\ConstantesDB\ConsAlmacenModel::NOMBRE.") VALUES (?,".$almacen->getNombre().")";
+                    break;
+            }
+            $prep_insert=$db_connection->prepare($insert);
+
+            $id=self::getLastIdAlmacen();
+
+            $prep_insert->bind_param(i,$id);
+
+            $prep_insert->execute();
+
+            $prep_insert->close();
+        }
+    }
+
+
     public static function getAlmacen($idproducto)
     {
         $listaAlmacen = null;
@@ -70,88 +109,43 @@ class AlmacenHandlerModel
 
             while ($prep_query->fetch()) {
                 $tipo = utf8_encode($tipo);
-                $nombre="";
+                $select="";
 
                 switch($tipo){
-                    case "bebida":
+                    case \ConstantesDB\ConsAlmacenModel::TABLE_NAME_BEBIDA:
 
-                        $selectNombrebebidaxid = "Select ".\ConstantesDB\ConsAlmacenModel::NOMBRE.
+                        $select= "Select ".\ConstantesDB\ConsAlmacenModel::NOMBRE.
                             " From ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_BEBIDA.
                             " Where ".\ConstantesDB\ConsAlmacenModel::COD." = ?";
-                        //$db->closeConnection();
-
-                        //$db = DatabaseModel::getInstance();
-                        //$db_connection = $db->getConnection();
-
-                        $prep_query2 = $db_connection->prepare($selectNombrebebidaxid);
-
-                        $prep_query2->bind_param('i', $idproducto);
-
-                        $prep_query2->execute();
-
-                        $prep_query2->bind_result($nombre);
-
-                        $prep_query2 -> store_result();
-                        while ($prep_query2->fetch()){
-                            echo $nombre;
-                        }
-
-                        $prep_query2->close();
-
-
 
                         break;
 
-                    case "alimento":
-                        $selectNombrealimentoxid = "Select ".\ConstantesDB\ConsAlmacenModel::NOMBRE.
+                    case \ConstantesDB\ConsAlmacenModel::TABLE_NAME_COMIDA:
+                        $select = "Select ".\ConstantesDB\ConsAlmacenModel::NOMBRE.
                             " From ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_COMIDA.
                             " Where ".\ConstantesDB\ConsAlmacenModel::COD." = ?";
 
-                        $db->closeConnection();
 
-                        $db = DatabaseModel::getInstance();
-                        $db_connection = $db->getConnection();
+                    break;
 
-                        $prep_query2 = $db_connection->prepare($selectNombrealimentoxid);
-
-                        $prep_query2->bind_param('i', $idproducto);
-                        $prep_query2->execute();
-
-                        $prep_query2->bind_result($nombre);
-
-                        $prep_query2 -> store_result();
-                        while ($prep_query2->fetch()){
-                            echo $nombre;
-                        }
-
-                        $prep_query2->close();
-
-                    case "suministro":
-                        $selectNombresuministroxid = "Select ".\ConstantesDB\ConsAlmacenModel::NOMBRE.
+                    case \ConstantesDB\ConsAlmacenModel::TABLE_NAME_SUMINISTRO:
+                        $select = "Select ".\ConstantesDB\ConsAlmacenModel::NOMBRE.
                             " From ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_SUMINISTRO.
                             " Where ".\ConstantesDB\ConsAlmacenModel::COD." = ?";
 
-                        $db->closeConnection();
-
-                        $db = DatabaseModel::getInstance();
-                        $db_connection = $db->getConnection();
-
-                        $prep_query2 = $db_connection->prepare($selectNombresuministroxid);
-
-                        $prep_query2->bind_param('i', $idproducto);
-
-                        $prep_query2->execute();
-
-                        $prep_query2->bind_result($nombre);
-
-                        $prep_query2 -> store_result();
-                        while ($prep_query2->fetch()){
-                            echo $nombre;
-                        }
-
-                        $prep_query2->close();
-
                         break;
+                }
+
+                $prep_query2 = $db_connection->prepare($select);
+                $prep_query2->bind_param('i', $idproducto);
+
+                $prep_query2->execute();
+
+                $prep_query2->bind_result($nombre);
+
+                $prep_query2 -> store_result();
+                while ($prep_query2->fetch()){
+
                 }
 
 
@@ -167,6 +161,32 @@ class AlmacenHandlerModel
 
         return $listaAlmacen;
     }
+
+
+    /*
+     * INTERFAZ getLastIdAlmacen
+     *  breve comentario : Este metodo recoge de la tabla Almacen de la base de datos el ultimo id creado.
+     *  Precondiciones: La base de datos debe estar creada y con las tablas creadas correctamente.
+     *  Entradas: Nada
+     *  Salidas: un entero con el ultimo id
+     *  PostCondiciones : entero asociado al nombre.
+     *
+     * */
+        public static function getLastIdAlmacen(){
+            $db = DatabaseModel::getInstance();
+            $db_connection = $db->getConnection();
+
+            $select = "Select top 1".\ConstantesDB\ConsAlmacenModel::COD." from ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME. " order by ".\ConstantesDB\ConsAlmacenModel::COD." desc";
+            $prepQuery=$db_connection->prepare($select);
+
+            $prepQuery->execute();
+
+            $prepQuery->bind_result($lastid);
+
+            $prepQuery->close();
+            return $lastid;
+        }
+
 
     //returns true if $id is a valid id for a book
     //In this case, it will be valid if it only contains
