@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.0">
+    <root id="1"/>
+    <schema id="2" parent="1" name="information_schema">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="test"/>
+    <view id="4" parent="2" name="ALL_PLUGINS">
+      <System>1</System>
+    </view>
+    <view id="5" parent="2" name="APPLICABLE_ROLES">
+      <System>1</System>
+    </view>
+    <view id="6" parent="2" name="CHANGED_PAGE_BITMAPS">
+      <System>1</System>
+    </view>
+    <view id="7" parent="2" name="CHARACTER_SETS">
+      <System>1</System>
+    </view>
+    <view id="8" parent="2" name="CLIENT_STATISTICS">
+      <System>1</System>
+    </view>
+    <view id="9" parent="2" name="COLLATIONS">
+      <System>1</System>
+    </view>
+    <view id="10" parent="2" name="COLLATION_CHARACTER_SET_APPLICABILITY">
+      <System>1</System>
+    </view>
+    <view id="11" parent="2" name="COLUMNS">
+      <System>1</System>
+    </view>
+    <view id="12" parent="2" name="COLUMN_PRIVILEGES">
+      <System>1</System>
+    </view>
+    <view id="13" parent="2" name="ENABLED_ROLES">
+      <System>1</System>
+    </view>
+    <view id="14" parent="2" name="ENGINES">
+      <System>1</System>
+    </view>
+    <view id="15" parent="2" name="EVENTS">
+      <System>1</System>
+    </view>
+    <view id="16" parent="2" name="FILES">
+      <System>1</System>
+    </view>
+    <view id="17" parent="2" name="GEOMETRY_COLUMNS">
+      <System>1</System>
+    </view>
+    <view id="18" parent="2" name="GLOBAL_STATUS">
+      <System>1</System>
+    </view>
+    <view id="19" parent="2" name="GLOBAL_VARIABLES">
+      <System>1</System>
+    </view>
+    <view id="20" parent="2" name="INDEX_STATISTICS">
+      <System>1</System>
+    </view>
+    <view id="21" parent="2" name="INNODB_BUFFER_PAGE">
+      <System>1</System>
+    </view>
+    <view id="22" parent="2" name="INNODB_BUFFER_PAGE_LRU">
+      <System>1</System>
+    </view>
+    <view id="23" parent="2" name="INNODB_BUFFER_POOL_STATS">
+      <System>1</System>
+    </view>
+    <view id="24" parent="2" name="INNODB_CHANGED_PAGES">
+      <System>1</System>
+    </view>
+    <view id="25" parent="2" name="INNODB_CMP">
+      <System>1</System>
+    </view>
+    <view id="26" parent="2" name="INNODB_CMPMEM">
+      <System>1</System>
+    </view>
+    <view id="27" parent="2" name="INNODB_CMPMEM_RESET">
+      <System>1</System>
+    </view>
+    <view id="28" parent="2" name="INNODB_CMP_PER_INDEX">
+      <System>1</System>
+    </view>
+    <view id="29" parent="2" name="INNODB_CMP_PER_INDEX_RESET">
+      <System>1</System>
+    </view>
+    <view id="30" parent="2" name="INNODB_CMP_RESET">
+      <System>1</System>
+    </view>
+    <view id="31" parent="2" name="INNODB_FT_BEING_DELETED">
+      <System>1</System>
+    </view>
+    <view id="32" parent="2" name="INNODB_FT_CONFIG">
+      <System>1</System>
+    </view>
+    <view id="33" parent="2" name="INNODB_FT_DEFAULT_STOPWORD">
+      <System>1</System>
+    </view>
+    <view id="34" parent="2" name="INNODB_FT_DELETED">
+      <System>1</System>
+    </view>
+    <view id="35" parent="2" name="INNODB_FT_INDEX_CACHE">
+      <System>1</System>
+    </view>
+    <view id="36" parent="2" name="INNODB_FT_INDEX_TABLE">
+      <System>1</System>
+    </view>
+    <view id="37" parent="2" name="INNODB_LOCKS">
+      <System>1</System>
+    </view>
+    <view id="38" parent="2" name="INNODB_LOCK_WAITS">
+      <System>1</System>
+    </view>
+    <view id="39" parent="2" name="INNODB_METRICS">
+      <System>1</System>
+    </view>
+    <view id="40" parent="2" name="INNODB_MUTEXES">
+      <System>1</System>
+    </view>
+    <view id="41" parent="2" name="INNODB_SYS_COLUMNS">
+      <System>1</System>
+    </view>
+    <view id="42" parent="2" name="INNODB_SYS_DATAFILES">
+      <System>1</System>
+    </view>
+    <view id="43" parent="2" name="INNODB_SYS_FIELDS">
+      <System>1</System>
+    </view>
+    <view id="44" parent="2" name="INNODB_SYS_FOREIGN">
+      <System>1</System>
+    </view>
+    <view id="45" parent="2" name="INNODB_SYS_FOREIGN_COLS">
+      <System>1</System>
+    </view>
+    <view id="46" parent="2" name="INNODB_SYS_INDEXES">
+      <System>1</System>
+    </view>
+    <view id="47" parent="2" name="INNODB_SYS_SEMAPHORE_WAITS">
+      <System>1</System>
+    </view>
+    <view id="48" parent="2" name="INNODB_SYS_TABLES">
+      <System>1</System>
+    </view>
+    <view id="49" parent="2" name="INNODB_SYS_TABLESPACES">
+      <System>1</System>
+    </view>
+    <view id="50" parent="2" name="INNODB_SYS_TABLESTATS">
+      <System>1</System>
+    </view>
+    <view id="51" parent="2" name="INNODB_TABLESPACES_ENCRYPTION">
+      <System>1</System>
+    </view>
+    <view id="52" parent="2" name="INNODB_TABLESPACES_SCRUBBING">
+      <System>1</System>
+    </view>
+    <view id="53" parent="2" name="INNODB_TRX">
+      <System>1</System>
+    </view>
+    <view id="54" parent="2" name="KEY_CACHES">
+      <System>1</System>
+    </view>
+    <view id="55" parent="2" name="KEY_COLUMN_USAGE">
+      <System>1</System>
+    </view>
+    <view id="56" parent="2" name="PARAMETERS">
+      <System>1</System>
+    </view>
+    <view id="57" parent="2" name="PARTITIONS">
+      <System>1</System>
+    </view>
+    <view id="58" parent="2" name="PLUGINS">
+      <System>1</System>
+    </view>
+    <view id="59" parent="2" name="PROCESSLIST">
+      <System>1</System>
+    </view>
+    <view id="60" parent="2" name="PROFILING">
+      <System>1</System>
+    </view>
+    <view id="61" parent="2" name="REFERENTIAL_CONSTRAINTS">
+      <System>1</System>
+    </view>
+    <view id="62" parent="2" name="ROUTINES">
+      <System>1</System>
+    </view>
+    <view id="63" parent="2" name="SCHEMATA">
+      <System>1</System>
+    </view>
+    <view id="64" parent="2" name="SCHEMA_PRIVILEGES">
+      <System>1</System>
+    </view>
+    <view id="65" parent="2" name="SESSION_STATUS">
+      <System>1</System>
+    </view>
+    <view id="66" parent="2" name="SESSION_VARIABLES">
+      <System>1</System>
+    </view>
+    <view id="67" parent="2" name="SPATIAL_REF_SYS">
+      <System>1</System>
+    </view>
+    <view id="68" parent="2" name="STATISTICS">
+      <System>1</System>
+    </view>
+    <view id="69" parent="2" name="SYSTEM_VARIABLES">
+      <System>1</System>
+    </view>
+    <view id="70" parent="2" name="TABLES">
+      <System>1</System>
+    </view>
+    <view id="71" parent="2" name="TABLESPACES">
+      <System>1</System>
+    </view>
+    <view id="72" parent="2" name="TABLE_CONSTRAINTS">
+      <System>1</System>
+    </view>
+    <view id="73" parent="2" name="TABLE_PRIVILEGES">
+      <System>1</System>
+    </view>
+    <view id="74" parent="2" name="TABLE_STATISTICS">
+      <System>1</System>
+    </view>
+    <view id="75" parent="2" name="TRIGGERS">
+      <System>1</System>
+    </view>
+    <view id="76" parent="2" name="USER_PRIVILEGES">
+      <System>1</System>
+    </view>
+    <view id="77" parent="2" name="USER_STATISTICS">
+      <System>1</System>
+    </view>
+    <view id="78" parent="2" name="VIEWS">
+      <System>1</System>
+    </view>
+    <view id="79" parent="2" name="XTRADB_INTERNAL_HASH_TABLES">
+      <System>1</System>
+    </view>
+    <view id="80" parent="2" name="XTRADB_READ_VIEW">
+      <System>1</System>
+    </view>
+    <view id="81" parent="2" name="XTRADB_RSEG">
+      <System>1</System>
+    </view>
+  </database-model>
+</dataSource>
