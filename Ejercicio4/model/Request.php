@@ -68,6 +68,8 @@ class Request
 
                 break;
             default:
+                $this->format = "json";
+                $parameters = json_decode($body);
                 // we could parse other supported formats here
                 break;
         }

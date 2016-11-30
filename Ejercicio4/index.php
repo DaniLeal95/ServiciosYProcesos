@@ -24,6 +24,14 @@ function apiAutoload($classname)
             $res = true;
         }
     }
+    else{
+        if (file_exists(__DIR__ . '/model/' . $classname . '.php')) {
+//            echo "<br/>cargamos clase: " . __DIR__ . '/model/' . $classname . '.php';
+            require_once __DIR__ . '/model/' . $classname . '.php';
+//            echo "clase cargada.......................";
+            $res = true;
+        }
+    }
     //Instead of having Views, like in a Model-View-Controller project,
     //we will have a Response class. So we don't need the following.
     //Although we could have different classes to generate the output,

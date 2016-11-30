@@ -19,7 +19,7 @@ class Almacen implements JsonSerializable
      * @param $tipo
      * @param $cantidad
      */
-    public function __construct( $tipo, $cantidad,$nombre,$idproducto)
+    public function __construct( $idproducto,$tipo, $cantidad,$nombre)
     {
         $this->idproducto = $idproducto;
         $this->tipo = $tipo;

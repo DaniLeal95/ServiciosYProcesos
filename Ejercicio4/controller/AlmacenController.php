@@ -10,28 +10,6 @@
 require_once "Controller.php";
 class AlmacenController extends Controller
 {
-
-    public function managePostVerb(Request $request)
-    {
-        $almacen = null;
-
-        $almacen = new Almacen(0,
-                                $request->getBodyParameters()->tipo,
-                                $request->getBodyParameters()->cantidad,
-                                $request->getBodyParameters()->nombre);
-
-        AlmacenHandlerModel::setAlmacen($almacen);
-        if($request!=null){
-            $code = '200';
-        } else {
-            $code = '400';
-        }
-        $response = new Response($code, null, $request->getAccept());
-        $response->generate();
-
-    }
-
-
     public function manageGetVerb(Request $request)
     {
 
@@ -67,6 +45,27 @@ class AlmacenController extends Controller
         $response->generate();
 
     }
+
+    public function managePostVerb(Request $request)
+    {
+        $almacen = null;
+
+        $almacen = new Almacen(0,
+            $request->getBodyParameters()->tipo,
+            $request->getBodyParameters()->cantidad,
+            $request->getBodyParameters()->nombre);
+
+        AlmacenHandlerModel::setAlmacen($almacen);
+        if($request!=null){
+            $code = '200';
+        } else {
+            $code = '400';
+        }
+        $response = new Response($code, null, $request->getAccept());
+        $response->generate();
+
+    }
+
 
 
 }
