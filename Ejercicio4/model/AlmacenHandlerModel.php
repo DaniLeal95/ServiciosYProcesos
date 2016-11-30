@@ -10,6 +10,57 @@ Require_once "Almacen.php";
 class AlmacenHandlerModel
 {
 
+    public static function deleteProduct($id){
+        $db = DatabaseModel::getInstance();
+        $db_connection = $db->getConnection();
+
+        $select="SELECT TIPO FROM ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME." WHERE ".\ConstantesDB\ConsAlmacenModel::COD." = ?";
+        $prep_select= $db_connection->prepare($select);
+        $prep_select->bind_param("i",$id);
+        $prep_select->execute();
+        $prep_select->store_result();
+        $prep_select->bind_result($tipo);
+        while($prep_select->fetch()){}
+
+        $prep_select->close();
+
+        /*Comenzamos a eliminar*/
+        switch ($tipo){
+            case \ConstantesDB\ConsAlmacenModel::TABLE_NAME_BEBIDA:
+                $delete="Delete from ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_BEBIDA." where ".\ConstantesDB\ConsAlmacenModel::COD." = ?";
+                break;
+            case \ConstantesDB\ConsAlmacenModel::TABLE_NAME_COMIDA:
+                $delete="Delete from ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_COMIDA." where ".\ConstantesDB\ConsAlmacenModel::COD." = ?";
+                break;
+            case \ConstantesDB\ConsAlmacenModel::TABLE_NAME_SUMINISTRO:
+                $delete="Delete from ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_SUMINISTRO." where ".\ConstantesDB\ConsAlmacenModel::COD." = ?";
+                break;
+        }
+
+        $db=DatabaseModel::getInstance();
+        $db_connection=$db->getConnection();
+        $prep_delete=$db_connection->prepare($delete);
+
+        $prep_delete->bind_param("i",$id);
+        $res=$prep_delete->execute();
+        $prep_delete->close();
+        if($res){
+
+            $db=DatabaseModel::getInstance();
+            $db_connection=$db->getConnection();
+
+            $delete="Delete from ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME." where ".\ConstantesDB\ConsAlmacenModel::COD." = ?";
+            $prep_delete=$db_connection->prepare($delete);
+
+            $prep_delete->bind_param("i",$id);
+            $res=$prep_delete->execute();
+            $prep_delete->close();
+        }
+        return $res;
+
+    }
+
+
     public static function setAlmacen($almacen){
         $db = DatabaseModel::getInstance();
         $db_connection = $db->getConnection();
@@ -66,6 +117,56 @@ class AlmacenHandlerModel
             $prep_insert->execute();
 
             $prep_insert->close();
+        }
+    }
+
+
+    public static function updateAlmacen($almacen){
+        $almacenexistente=self::getAlmacen($almacen->getIdproducto());
+
+        if($almacenexistente->getTipo() != $almacen->getTipo()){
+
+            //Si queremos modificar un producto y lo queremos cambiar de tipo
+            //tenemos que quitarlo de la tabla 'tipo' anterior e insertarlo en la actual.
+            self::deleteProduct($almacen->getIdproducto());
+
+            self::setAlmacen($almacen);
+        }
+        else {
+            $db = DatabaseModel::getInstance();
+            $db_connection = $db->getConnection();
+
+            $update = "UPDATE " . \ConstantesDB\ConsAlmacenModel::TABLE_NAME . " SET ".\ConstantesDB\ConsAlmacenModel::CANTIDAD." = '" . $almacen->getCantidad() . "' WHERE " . \ConstantesDB\ConsAlmacenModel::COD . "= ?";
+
+            $prep_update= $db_connection->prepare($update);
+            $prep_update->bind_param("i",$almacen->getIdproducto());
+            $prep_update->execute();
+            $prep_update->close();
+
+
+            //Ahora actualizamos la tabla del tipo si el nombre ha cambiado
+            if($almacenexistente->getNombre()!=$almacen->getNombre()) {
+                $db = DatabaseModel::getInstance();
+                $db_connection = $db->getConnection();
+
+                switch ($almacen->getTipo()) {
+                    case \ConstantesDB\ConsAlmacenModel::TABLE_NAME_BEBIDA:
+                        $update = "UPDATE " . \ConstantesDB\ConsAlmacenModel::TABLE_NAME_BEBIDA . " SET nombre = '" . $almacen->getNombre() . "' WHERE " . \ConstantesDB\ConsAlmacenModel::COD . "= ?";
+                        break;
+                    case \ConstantesDB\ConsAlmacenModel::TABLE_NAME_COMIDA:
+                        $update = "UPDATE " . \ConstantesDB\ConsAlmacenModel::TABLE_NAME_COMIDA . " SET nombre=  '" . $almacen->getNombre() . "' WHERE " . \ConstantesDB\ConsAlmacenModel::COD . "= ?";
+                        break;
+                    case \ConstantesDB\ConsAlmacenModel::TABLE_NAME_SUMINISTRO:
+                        $update = "UPDATE " . \ConstantesDB\ConsAlmacenModel::TABLE_NAME_SUMINISTRO . " SET nombre=  '" . $almacen->getNombre() . "' WHERE " . \ConstantesDB\ConsAlmacenModel::COD . "= ?";
+                        break;
+                }
+
+
+                $prep_update = $db_connection->prepare($update);
+                $prep_update->bind_param("i", $almacen->getIdproducto());
+                $prep_update->execute();
+                $prep_update->close();
+            }
         }
     }
 
@@ -174,7 +275,7 @@ class AlmacenHandlerModel
 
                 $listaAlmacen[] = $almacen;
             }
-$select = "Select top 1 ".\ConstantesDB\ConsAlmacenModel::COD." from ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME. " order by ".\ConstantesDB\ConsAlmacenModel::COD." desc";
+
 
 
         }
@@ -182,22 +283,6 @@ $select = "Select top 1 ".\ConstantesDB\ConsAlmacenModel::COD." from ".\Constant
 
         return $listaAlmacen;
     }
-
-
-    /*
-     * INTERFAZ getLastIdAlmacen
-     *  breve comentario : Este metodo recoge de la tabla Almacen de la base de datos el ultimo id creado.
-     *  Precondiciones: La base de datos debe estar creada y con las tablas creadas correctamente.
-     *  Entradas: Nada
-     *  Salidas: un entero con el ultimo id
-     *  PostCondiciones : entero asociado al nombre.
-     *
-     *
-        public static function getLastIdAlmacen(){
-
-            return $lastid;
-        }
-*/
 
     //returns true if $id is a valid id for a book
     //In this case, it will be valid if it only contains

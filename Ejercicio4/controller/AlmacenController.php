@@ -50,12 +50,14 @@ class AlmacenController extends Controller
     {
         $almacen = null;
 
-        $almacen = new Almacen(0,
-            $request->getBodyParameters()->tipo,
-            $request->getBodyParameters()->cantidad,
-            $request->getBodyParameters()->nombre);
+        for($i=0;$i<count($request->getBodyParameters());$i++) {
+            $almacen = new Almacen(0,
+                $request->getBodyParameters()[$i]->tipo,
+                $request->getBodyParameters()[$i]->cantidad,
+                $request->getBodyParameters()[$i]->nombre);
 
-        AlmacenHandlerModel::setAlmacen($almacen);
+            AlmacenHandlerModel::setAlmacen($almacen);
+        }
         if($request!=null){
             $code = '200';
         } else {
@@ -66,6 +68,61 @@ class AlmacenController extends Controller
 
     }
 
+    public function manageDeleteVerb(Request $request)
+    {
 
+        $id=-1;
+        if (isset($request->getUrlElements()[2])) {
+            $id = $request->getUrlElements()[2];
+        }
+
+        if($id!=-1){
+            $res=AlmacenHandlerModel::deleteProduct($id);
+        }
+
+        if($res!=-1) {
+            if ($request != null) {
+                $code = '200';
+            }
+            else{
+                $code = '400';
+            }
+        }
+        $response = new Response($code,null,$request->getAccept());
+        $response->generate();
+    }
+
+    public function managePutVerb(Request $request)
+    {
+        for ($i = 0; $i < count($request->getBodyParameters()); $i++) {
+            if (isset($request->getBodyParameters()->idproducto)) {
+                //Entonces es una actualizacion
+
+                $almacen = new Almacen(
+                    $request->getBodyParameters()[$i]->idproducto,
+                    $request->getBodyParameters()[$i]->tipo,
+                    $request->getBodyParameters()[$i]->cantidad,
+                    $request->getBodyParameters()[$i]->nombre);
+                //LLAMADA A ACTUALIZACION
+                AlmacenHandlerModel::updateAlmacen($almacen);
+
+            } else {
+                //Entonces es una insercion
+                $almacen = new Almacen(
+                    0,
+                    $request->getBodyParameters()[$i]->tipo,
+                    $request->getBodyParameters()[$i]->cantidad,
+                    $request->getBodyParameters()[$i]->nombre);
+                AlmacenHandlerModel::setAlmacen($almacen);
+            }
+        }
+        if($request!=null){
+            $code = '200';
+        } else {
+            $code = '400';
+        }
+        $response = new Response($code, null, $request->getAccept());
+        $response->generate();
+    }
 
 }
