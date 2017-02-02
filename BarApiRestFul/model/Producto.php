@@ -15,7 +15,7 @@ class Producto implements JsonSerializable
     private $precio;
 
 
-    public function __construct( $idproducto,$idcategoria,$nombre,$precio)
+    public function __construct( $idproducto,$nombre,$precio,$idcategoria)
     {
         $this->idproducto = $idproducto;
         $this->idcategoria = $idcategoria;
@@ -36,9 +36,9 @@ class Producto implements JsonSerializable
     {
         return array(
             'idproducto' => $this->idproducto,
-            'idcategoria'=> $this->idcategoria,
-            'nombre'=> $this->nombre,
-            'precio'=> $this->precio
+			'nombre'=> $this->nombre,
+            'precio'=> $this->precio,
+			'idcategoria'=> $this->idcategoria
         );
 
     }
@@ -47,9 +47,9 @@ class Producto implements JsonSerializable
     public function __sleep()
     {
       return array('idproducto',
-          'idcategoria',
           'nombre',
-          'precio');
+          'precio',
+		  'idcategoria');
     }
 
     /**

@@ -56,9 +56,10 @@ class ProductoController extends Controller
 
         for($i=0;$i<count($request->getBodyParameters());$i++) {
             $producto = new Producto(0,
-                $request->getBodyParameters()[$i]->idcategoria,
+                
                 $request->getBodyParameters()[$i]->nombre,
-                $request->getBodyParameters()[$i]->precio
+                $request->getBodyParameters()[$i]->precio,
+				$request->getBodyParameters()[$i]->idcategoria
                 );
 
             $filasafectadas=ProductoHandlerModel::addProducto($producto);
@@ -107,9 +108,9 @@ class ProductoController extends Controller
 
         $producto = new Producto(
             $request->getUrlElements()[2],
-            $request->getBodyParameters()->idcategoria,
             $request->getBodyParameters()->nombre,
-            $request->getBodyParameters()->precio
+            $request->getBodyParameters()->precio,
+			$request->getBodyParameters()->idcategoria
             );
                 //LLAMADA A ACTUALIZACION
         $actualizacion=ProductoHandlerModel::updateProducto($producto);

@@ -16,4 +16,12 @@ class ConsAlmacenModel
     const PRECIO = "precio";
     const NOMBRE = "nombre";
 
+    /*Usuarios*/
+
+    const TABLE_NAME_USUARIOS= "usuarios";
+    const IDUSUARIO = "id";
+    const NOMBREUSUARIO = "nombre";
+    const PASSWUSUARIO = "passw";
+
+
 }

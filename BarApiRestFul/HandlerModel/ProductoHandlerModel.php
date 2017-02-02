@@ -35,10 +35,11 @@ class ProductoHandlerModel
 
         $insert="INSERT INTO ".\ConstantesDB\ConsAlmacenModel::TABLE_NAME_PRODUCTOS." (".\ConstantesDB\ConsAlmacenModel::NOMBRE.",".\ConstantesDB\ConsAlmacenModel::PRECIO.",".\ConstantesDB\ConsAlmacenModel::TIPO.")VALUES ('". $producto->getNombre()."',".$producto->getPrecio().",".$producto->getIdcategoria().")";
 
+		
         $prep_insert=$db_connection->prepare($insert);
 
         $filasafectadas=$prep_insert->execute();
-
+		
         $prep_insert->close();
 
         return $filasafectadas;

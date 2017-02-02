@@ -52,8 +52,24 @@ $verb = $_SERVER['REQUEST_METHOD'];
 $path_info = !empty($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : (!empty($_SERVER['ORIG_PATH_INFO']) ? $_SERVER['ORIG_PATH_INFO'] : '');
 $url_elements = explode('/', $path_info);
 //$url_elements = explode('/', $_SERVER['PATH_INFO']);
+$user = null;
+$pass = null;
+echo $_SERVER['PHP_AUTH_USER'];
+if(isset($_SERVER['PHP_AUTH_USER'])){
+	echo 1;
+    $user = $_SERVER['PHP_AUTH_USER'];
+    $pass = $_SERVER['PHP_AUTH_PW'];
+    $authenticate = new Authenticate();
+ $userencontrado = $authenticate->CompruebaAdmin($user,$pass);
+}else{
+	echo 'Tus muertos';
+    $prueba=null;
+}
+
 $query_string = null;
+
 if (isset($_SERVER['QUERY_STRING'])) {
+	
     parse_str($_SERVER['QUERY_STRING'], $query_string);
 }
 $body = file_get_contents("php://input");
@@ -81,7 +97,13 @@ if (class_exists($controller_name)) {
 
     $controller = new $controller_name();
     $action_name = 'manage' . ucfirst(strtolower($verb)) . 'Verb';
-    $controller->$action_name($req);
+    echo $userencontrado;
+	if ($userencontrado == 1) {
+        $controller->$action_name($req);
+    }else{
+       echo 'This is not Sparta';
+     }
+	
     //$result = $controller->$action_name($req);
     //print_r($result);
 } //If class does not exist, we will send the request to NotFoundController
