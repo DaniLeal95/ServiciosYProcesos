@@ -10,7 +10,7 @@ namespace ConstantesDB;
 class ConsAlmacenModel
 {
     /*Producto*/
-    const TABLE_NAME = "Productos";
+    const TABLE_NAME_PRODUCTOS = "productos";
     const COD = "idproducto";
     const TIPO = "idcategoria";
     const PRECIO = "precio";

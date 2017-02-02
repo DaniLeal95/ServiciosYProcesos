@@ -25,9 +25,9 @@ function apiAutoload($classname)
         }
     }
     else{
-        if (file_exists(__DIR__ . '/model/' . $classname . '.php')) {
+        if (file_exists(__DIR__ . '/HandlerModel/' . $classname . '.php')) {
 //            echo "<br/>cargamos clase: " . __DIR__ . '/model/' . $classname . '.php';
-            require_once __DIR__ . '/model/' . $classname . '.php';
+            require_once __DIR__ . '/HandlerModel/' . $classname . '.php';
 //            echo "clase cargada.......................";
             $res = true;
         }
@@ -75,6 +75,7 @@ $req = new Request($verb, $url_elements, $query_string, $body, $content_type, $a
 
 // route the request to the right place
 $controller_name = ucfirst($url_elements[1]) . 'Controller';
+
 if (class_exists($controller_name)) {
 
 
